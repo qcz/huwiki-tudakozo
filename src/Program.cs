@@ -8,11 +8,11 @@ using System.IO;
 
 namespace TudakozóDotNet
 {
-    class Program: Bot
-    {
+	class Program: Bot
+	{
 
-        static void Main(string[] args)
-        {
+		static void Main(string[] args)
+		{
 			var loginDataPath = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "Cache", "Defaults.dat");
 			string[] loginContents = null;
 			try
@@ -42,28 +42,28 @@ namespace TudakozóDotNet
 			}
 
 			Site huwiki = new Site(loginContents[0], loginContents[1], loginContents[2]);
-            
-            string ma = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+			
+			string ma = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
 
-            Page maiArch = new Page(huwiki, "Wikipédia:Tudakozó/Archívum/" + ma);
-            maiArch.Load();
-            if (maiArch.Exists())
-            {
-                Console.WriteLine("Ma már történt archiválás....");
-            }
-            else
-            {
-                Page tudMost = new Page(huwiki, "Wikipédia:Tudakozó");
-                tudMost.Load();
-                tudMost.RenameTo(maiArch.title, "Bot: Tudakozó napi archiválása");
-                if (Regex.IsMatch(tudMost.text, @"\{\{/Fejrész\}\}")) {
-                    tudMost.text = Regex.Replace(tudMost.text, @"\{\{/Fejrész\}\}", @"<noinclude>{{Tudakozó-keretes}}</noinclude>");
-                    tudMost.Save(tudMost.text, "Bot: fejrész cseréje az archívumsablonra", false);
-                }
+			Page maiArch = new Page(huwiki, "Wikipédia:Tudakozó/Archívum/" + ma);
+			maiArch.Load();
+			if (maiArch.Exists())
+			{
+				Console.WriteLine("Ma már történt archiválás....");
+			}
+			else
+			{
+				Page tudMost = new Page(huwiki, "Wikipédia:Tudakozó");
+				tudMost.Load();
+				tudMost.RenameTo(maiArch.title, "Bot: Tudakozó napi archiválása");
+				if (Regex.IsMatch(tudMost.text, @"\{\{/Fejrész\}\}")) {
+					tudMost.text = Regex.Replace(tudMost.text, @"\{\{/Fejrész\}\}", @"<noinclude>{{Tudakozó-keretes}}</noinclude>");
+					tudMost.Save(tudMost.text, "Bot: fejrész cseréje az archívumsablonra", false);
+				}
 
-                Page ujMost = new Page(huwiki, "Wikipédia:Tudakozó");
-                ujMost.Save("{{/Fejrész}}", "Bot: új, üres oldal elhelyezése", true);
-            }
-        }
-    }
+				Page ujMost = new Page(huwiki, "Wikipédia:Tudakozó");
+				ujMost.Save("{{/Fejrész}}", "Bot: új, üres oldal elhelyezése", true);
+			}
+		}
+	}
 }
